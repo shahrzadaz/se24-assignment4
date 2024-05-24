@@ -1,6 +1,7 @@
 package de.unibayreuth.se.teaching.list.business.impl;
 
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
@@ -9,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Step definitions for the Cucumber tests of the doubly-linked list.
@@ -77,5 +80,40 @@ public class CucumberDoublyLinkedListSteps {
     @Then("the list should contain {int} element(s)")
     public void theListShouldContainElement(int count) {
         Assertions.assertEquals(count, list.getLength());
+    }
+
+    @Given("a sorted list with {int} elements")
+    public void aSortedListWithElements(int arg0) {
+        list = new DoublyLinkedList();
+        list.append(0.5);
+        list.append(0.9);
+        list.append(3.3);
+        list.append(4.2);
+    }
+
+    @When("I insert an element with value {double}")
+    public void iInsertAnElementWithValue(double val) {
+        this.value = val;
+        list.insert(val);
+    }
+
+    @And("The list should be sorted")
+    public void theListShouldBeSorted() {
+        assertTrue(isSorted(list), "the list is not sorted");
+    }
+
+    private boolean isSorted(DoublyLinkedList list) {
+        if (list == null || list.isEmpty()) {
+            return true; // An empty list or single-element list is considered sorted
+        }
+
+        DoublyLinkedList.Element current = list.getStart();
+        while (current.getNext() != null) {
+            if (current.getValue() > current.getNext().getValue()) {
+                return false; // If current element is greater than next element, list is not sorted
+            }
+            current = current.getNext();
+        }
+        return true; // If the loop completes, the list is sorted
     }
 }
