@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -82,14 +83,8 @@ public class CucumberDoublyLinkedListSteps {
         Assertions.assertEquals(count, list.getLength());
     }
 
-    @Given("a sorted list with {int} elements")
-    public void aSortedListWithElements(int arg0) {
-        list = new DoublyLinkedList();
-        list.append(0.5);
-        list.append(0.9);
-        list.append(3.3);
-        list.append(4.2);
-    }
+
+
 
     @When("I insert an element with value {double}")
     public void iInsertAnElementWithValue(double val) {
@@ -104,7 +99,7 @@ public class CucumberDoublyLinkedListSteps {
 
     private boolean isSorted(DoublyLinkedList list) {
         if (list == null || list.isEmpty()) {
-            return true; // An empty list or single-element list is considered sorted
+            return true;
         }
 
         DoublyLinkedList.Element current = list.getStart();
@@ -114,6 +109,21 @@ public class CucumberDoublyLinkedListSteps {
             }
             current = current.getNext();
         }
-        return true; // If the loop completes, the list is sorted
+        return true;
+    }
+
+
+
+    @And("The last list element should be {double}")
+    public void theLastListElementShouldBe(double expectedValue) {
+        double actualValue = list.getEnd().getValue();
+        assertEquals(expectedValue, actualValue, 0.0);
+    }
+
+
+    @And("The first list element should be {double}")
+    public void theFirstListElementShouldBe(double expectedValue) {
+        double actualValue = list.getStart().getValue();
+        assertEquals(expectedValue,actualValue);
     }
 }

@@ -40,6 +40,8 @@ public class ListController {
                 .toList());
     }
 
+
+
       @DeleteMapping(value = "/list")
       public ResponseEntity<List<ListElementDto>> emptyList(){
         return ResponseEntity.ok(listService.emptyList().stream().map(this::toDto).toList());
